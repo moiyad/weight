@@ -27,7 +27,7 @@
             </intent-filter>
 
         </activity>
-        <activity android:name=".demo" android:parentActivityName=".MainActivity"></activity>
+        <activity android:name=".NewPlan" android:parentActivityName=".MainActivity"></activity>
 
     </application>
 

@@ -7,7 +7,6 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Adapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -15,7 +14,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
+import com.example.tr2355.weighttracker.data.Plan;
+import com.example.tr2355.weighttracker.data.Record;
+
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -27,7 +28,6 @@ public class MainActivity extends AppCompatActivity {
     List<Record> records;
     List<Plan> plans;
     LinearLayout layoutInfo,layoutRecord;
-    RecordAdapter adapter;
 
 
     @Override
@@ -44,12 +44,12 @@ public class MainActivity extends AppCompatActivity {
         layoutInfo =(LinearLayout)findViewById(R.id.layout_info);
         layoutRecord =(LinearLayout)findViewById(R.id.layout_record_s);
         listView =(ListView)findViewById(R.id.listRecord);
-        adapter = new RecordAdapter(this,new ArrayList<Record>());
         mTextMessage = (TextView) findViewById(R.id.message);
+
         layoutRecord.setVisibility(View.INVISIBLE);
         plans = Plan.listAll(Plan.class);
         records =Record.listAll(Record.class);
-        listView.setAdapter(adapter);
+
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
     }
@@ -73,21 +73,17 @@ public class MainActivity extends AppCompatActivity {
                     listView.setVisibility(View.VISIBLE);
                     layoutInfo.setVisibility(View.VISIBLE);
                     layoutRecord.setVisibility(View.INVISIBLE);
-                    listView.setAdapter(adapter);
+
                     LayoutInformation();
 
-
                     return true;
-
-
-
 
                 case R.id.navigation_record:
 
 
                     mTextMessage.setText("Record");
                     layoutRecord.setVisibility(View.VISIBLE);
-                    listView.setVisibility(View.GONE);
+                    listView.setVisibility(View.INVISIBLE);
                     layoutInfo.setVisibility(View.INVISIBLE);
 
                     newWeightButton.setOnClickListener(new View.OnClickListener() {
@@ -104,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
 
                 case R.id.navigation_newPlan:
 
-                    Intent intent = new Intent(MainActivity.this,demo.class);
+                    Intent intent = new Intent(MainActivity.this,NewPlan.class);
                     startActivity(intent);
                     return true;
             }
@@ -122,16 +118,22 @@ public double LastIndexRecord(){
     return 0;
     }
     public void LayoutInformation(){
-        if(records.size()==0) {
-            currentW.setText("Current Weight : " + "Empty plan");
-            remainW.setText("Weeks Remain : "+String.valueOf(plans.get(0).getWeek()));
-            goalW.setText("Goal Weight : " + String.valueOf(plans.get(0).getGoalWeight()));
-            numberW.setText("Weeks : " + String.valueOf(plans.get(0).getWeek()));
-        }else {
-            currentW.setText("Current Weight : " + records.get(records.size()-1).getRecord());
-            goalW.setText("Goal Weight : " + String.valueOf(plans.get(0).getGoalWeight()));
-            numberW.setText("Weeks : " + String.valueOf(plans.get(0).getWeek()));
-            remainW.setText("Weeks Remain : " + String.valueOf(plans.get(0).getWeek() - records.size()));
+
+        if(plans.size()==0){
+            Toast.makeText(this, "There no plan yet", Toast.LENGTH_SHORT).show();
+        }
+        else {
+            if (records.size() == 0) {
+                currentW.setText("Current Weight : " + "Empty plan");
+                remainW.setText("Weeks Remain : " + String.valueOf(plans.get(0).getWeek()));
+                goalW.setText("Goal Weight : " + String.valueOf(plans.get(0).getGoalWeight()));
+                numberW.setText("Weeks : " + String.valueOf(plans.get(0).getWeek()));
+            } else {
+                currentW.setText("Current Weight : " + records.get(records.size() - 1).getRecord());
+                goalW.setText("Goal Weight : " + String.valueOf(plans.get(0).getGoalWeight()));
+                numberW.setText("Weeks : " + String.valueOf(plans.get(0).getWeek()));
+                remainW.setText("Weeks Remain : " + String.valueOf(plans.get(0).getWeek() - records.size()));
+            }
         }
     }
 }

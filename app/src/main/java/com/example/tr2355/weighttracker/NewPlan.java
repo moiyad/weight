@@ -8,13 +8,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.tr2355.weighttracker.data.Plan;
+
 import java.util.List;
 
 /**
  * Created by tr2355 on 8/20/2017.
  */
 
-public class demo extends AppCompatActivity {
+public class NewPlan extends AppCompatActivity {
 
     EditText currentW,goalW,weeks;
     Button done;
@@ -39,8 +41,8 @@ public class demo extends AppCompatActivity {
                 Plan.deleteAll(Plan.class);
                 Plan plan = new Plan(Double.parseDouble(String.valueOf(currentW.getText())),Double.parseDouble(String.valueOf(goalW.getText())),Integer.parseInt(String.valueOf(weeks.getText())));
                 plan.save();
-                Toast.makeText(demo.this, "size : "+list.size(), Toast.LENGTH_SHORT).show();
-                Intent intent =new Intent(demo.this,MainActivity.class);
+                Toast.makeText(NewPlan.this, "size : "+list.size(), Toast.LENGTH_SHORT).show();
+                Intent intent =new Intent(NewPlan.this,MainActivity.class);
                 startActivity(intent);
             }
         });

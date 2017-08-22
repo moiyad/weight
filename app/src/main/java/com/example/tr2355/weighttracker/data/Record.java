@@ -1,4 +1,4 @@
-package com.example.tr2355.weighttracker;
+package com.example.tr2355.weighttracker.data;
 
 import com.orm.SugarRecord;
 
